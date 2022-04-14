@@ -1,0 +1,12 @@
+<h1>OTP</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" placeholder="Enter OTP" name="otp" id=""> <br><br>
+    <button> Submit </button>
+
+    <br><br><br>
+    {% if message %}
+        {{ message }}
+    {% endif %}
+</form>

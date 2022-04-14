@@ -1,0 +1,16 @@
+<h1>Customer Inquiry</h1>
+
+<form method='POST'>
+    {% csrf_token %}
+    <input type="text" placeholder="Customer Name" name="name" id=""> <br><br>
+    <input type="text" placeholder="Email ID" name="email" id=""> <br><br>
+    <input type="text" placeholder="Phone Number" name="phone" id=""> <br><br>
+    <input type="text" placeholder="Customer Complaint" name="complaint" id=""> <br><br>
+    <input type="date" placeholder="End Date" name="end_date" id=""> <br><br>
+    <button> Submit </button>
+
+    <br><br><br><br>    
+    {% if message %}
+        {{message}}
+    {% endif %}
+</form
