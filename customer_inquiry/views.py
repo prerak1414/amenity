@@ -41,16 +41,28 @@ def create_inquiry(request):
 		end_date = request.POST.get('end_date')
 
 		otp = str(random.randint(100000, 999999))
+		
+		# email regex
+		email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-		if phone and customer_name and email:
+		if not customer_name and not phone and not email:
+			context = {'message' : 'Pease enter Customer Details'}
+			return render(request, 'inquiry.html' , context)
+		elif not (re.fullmatch(email_regex, email)): 
+			context = {'message' : 'Pease enter valid email address'}
+			return render(request, 'inquiry.html' , context)
+		elif len(phone) != 10:
+			context = {'message' : 'Pease enter valid phone number'}
+			return render(request, 'inquiry.html' , context)
+		elif phone and customer_name and email:
 			details = CustomerInquiry(customer_name=customer_name, email_id=email, phone_number=phone, customer_complaint_message=complaint, otp=otp, expire_date=end_date)
 			details.save()
 			send_otp(phone, otp)
 			request.session['phone'] = phone
 
 			return redirect('otp_page')
-		else:	
-			context = {'message' : 'Enter all details'}
+		else:
+			context = {'message' : 'Proper Customer Details not entered'}
 			return render(request, 'inquiry.html' , context)
 
 	return render(request, 'inquiry.html')
